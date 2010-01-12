@@ -9,9 +9,12 @@
 @interface EventsViewController : UITableViewController {
 	NSArray *eventList;
 	NSMutableArray *eventsSeparatedByDay;
+
+	NSDateFormatter *dateFormatter;
 }
 
 @property (nonatomic, retain) NSArray *eventList;
+@property (nonatomic, retain, readonly) NSDateFormatter *dateFormatter;
 
 - (void) updateEventList;
 

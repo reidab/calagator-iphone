@@ -14,6 +14,17 @@
 
 @synthesize eventList;
 
+// On-demand initializer for read-only property.
+- (NSDateFormatter *)dateFormatter {
+    if (dateFormatter == nil) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    }
+    return dateFormatter;
+}
+
+
 - (void)dealloc {
     [eventList release];
 	[super dealloc];
@@ -65,13 +76,8 @@
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-
-	// Should probably find a way to use a class-level date formatter
-	// instead of just creating one every time we need it.
-	NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-	[formatter setDateFormat:@"EEEE, MMMM d"];
-
-	return [formatter stringFromDate:[[[eventsSeparatedByDay objectAtIndex:section] objectAtIndex:0] date]];
+	[self.dateFormatter setDateFormat:@"EEEE, MMMM d"];
+	return [self.dateFormatter stringFromDate:[[[eventsSeparatedByDay objectAtIndex:section] objectAtIndex:0] date]];
 }
 
 // Customize the appearance of table view cells.
