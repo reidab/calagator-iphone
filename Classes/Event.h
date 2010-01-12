@@ -30,5 +30,6 @@
 @property (nonatomic, assign) double longitude;
 
 - (NSString *) cleanDescription;
+-(BOOL) occursOnTheSameDayAs:(Event*) otherEvent;
 
 @end

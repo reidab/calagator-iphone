@@ -40,6 +40,18 @@
 	[venueAddress release];
 	[super dealloc];
 }
+
+-(BOOL) occursOnTheSameDayAs:(Event*) otherEvent {
+	NSCalendar* calendar = [NSCalendar currentCalendar];
+
+	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+	NSDateComponents* comp1 = [calendar components:unitFlags fromDate:self.date];
+	NSDateComponents* comp2 = [calendar components:unitFlags fromDate:otherEvent.date];
+
+	return	[comp1 day]   == [comp2 day] &&
+			[comp1 month] == [comp2 month] &&
+			[comp1 year]  == [comp2 year];
+}
 	
 
 @end
