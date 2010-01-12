@@ -8,8 +8,11 @@
 
 @interface EventsViewController : UITableViewController {
 	NSArray *eventList;
+	NSMutableArray *eventsSeparatedByDay;
 }
 
 @property (nonatomic, retain) NSArray *eventList;
+
+- (void) updateEventList;
 
 @end

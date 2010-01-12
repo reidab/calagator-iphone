@@ -35,5 +35,6 @@
 
 - (IBAction) goToEventSite;
 - (IBAction) goToMap;
+- (void) updateEventList;
 
 @end

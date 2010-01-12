@@ -38,21 +38,40 @@
 	// e.g. self.myOutlet = nil;
 }
 
+- (void) updateEventList {
+	eventsSeparatedByDay = [[NSMutableArray alloc] init];
+	int index = 0;
+	for (Event *event in eventList) {
+		if (index == 0 || ![event occursOnTheSameDayAs:[eventList objectAtIndex:index-1]]) {
+			[eventsSeparatedByDay addObject:[[NSMutableArray alloc] init]];
+		}
+		[[eventsSeparatedByDay lastObject] addObject:event];
+		index++;
+	}
+
+	[self.tableView reloadData];
+}
 
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [eventsSeparatedByDay count];
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [eventList count];
+    return [[eventsSeparatedByDay objectAtIndex:section] count];
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return [NSString stringWithFormat:@"Today"];
+
+	// Should probably find a way to use a class-level date formatter
+	// instead of just creating one every time we need it.
+	NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+	[formatter setDateFormat:@"EEEE, MMMM d"];
+
+	return [formatter stringFromDate:[[[eventsSeparatedByDay objectAtIndex:section] objectAtIndex:0] date]];
 }
 
 // Customize the appearance of table view cells.
@@ -67,7 +86,8 @@
     }
     
 	// Configure the cell.
-	Event *event = [eventList objectAtIndex:indexPath.row];
+	//Event *event = [eventList objectAtIndex:indexPath.row];
+	Event *event = [[eventsSeparatedByDay objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	cell.textLabel.text = event.title;
     return cell;
 }
@@ -77,7 +97,7 @@
 
     // Navigation logic may go here -- for example, create and push another view controller.
 	EventViewController *eventViewController = [[EventViewController alloc] initWithNibName:@"EventViewController" bundle:nil];
-	eventViewController.event = [eventList objectAtIndex:indexPath.row];
+	eventViewController.event = [[eventsSeparatedByDay objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	[self.navigationController pushViewController:eventViewController animated:YES];
 	[eventViewController release];
 }

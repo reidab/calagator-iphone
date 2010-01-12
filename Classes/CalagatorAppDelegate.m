@@ -123,7 +123,7 @@
 - (void)addEventsToList:(NSArray *)events {
     [self.eventList addObjectsFromArray:events];
     // The table needs to be reloaded to reflect the new content of the list.
-	[eventsViewController.tableView reloadData];
+	[eventsViewController updateEventList];
 }
 
 #pragma mark Parser constants
