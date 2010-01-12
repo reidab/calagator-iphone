@@ -87,7 +87,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
@@ -95,6 +95,10 @@
 	//Event *event = [eventList objectAtIndex:indexPath.row];
 	Event *event = [[eventsSeparatedByDay objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	cell.textLabel.text = event.title;
+
+	[self.dateFormatter setDateFormat:@"h:mm a"];
+
+	cell.detailTextLabel.text = [[self.dateFormatter stringFromDate:event.date] stringByAppendingFormat:@", %@", event.venueTitle];
     return cell;
 }
 
